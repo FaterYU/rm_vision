@@ -1,0 +1,34 @@
+/camera_node:
+  ros__parameters:
+    camera_name: narrow_stereo
+    camera_info_url: package://rm_vision_bringup/config/camera_info.yaml
+    frame_id: "camera_optical_frame"
+    exposure_time: 2000
+    gain: 8.0
+
+/armor_detector:
+  ros__parameters:
+    debug: true
+
+    detect_color: 0
+    binary_thres: 80
+
+    classifier_threshold: 0.8
+    ignore_classes: ["negative"]
+
+/armor_tracker:
+  ros__parameters:
+    target_frame: odom
+
+    ekf:
+      sigma2_q_xyz: 10.0
+      sigma2_q_yaw: 100.0
+      sigma2_q_r: 800.0
+
+      r_xyz_factor: 0.05
+      r_yaw: 0.02
+
+    tracker:
+      max_match_distance: 0.15
+      tracking_thres: 3
+      lost_time_thres: 0.6
