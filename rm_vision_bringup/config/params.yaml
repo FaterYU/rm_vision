@@ -3,12 +3,12 @@
     camera_name: narrow_stereo
     camera_info_url: package://rm_vision_bringup/config/camera_info.yaml
     frame_id: "camera_optical_frame"
-    exposure_time: 2000
+    exposure_time: 2500
     gain: 8.0
 
 /armor_detector:
   ros__parameters:
-    debug: true
+    debug: false
 
     detect_color: 0
     binary_thres: 80
@@ -21,12 +21,12 @@
     target_frame: odom
 
     ekf:
-      sigma2_q_xyz: 8.0
-      sigma2_q_yaw: 100.0
-      sigma2_q_r: 800.0
+      sigma2_q_xyz: 5e-2
+      sigma2_q_yaw: 1e1
+      sigma2_q_r: 80.0
 
-      r_xyz_factor: 0.05
-      r_yaw: 0.02
+      r_xyz_factor: 2e-4
+      r_yaw: 5e-3
 
     tracker:
       max_match_distance: 0.15
