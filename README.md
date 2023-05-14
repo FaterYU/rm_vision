@@ -32,6 +32,31 @@ HikVision 相机模块 https://github.com/nolem-77/ros2_hik_camera
 
 ## 通过 Docker 部署
 
+拉取镜像
+
+```
+docker pull chenjunnn/rm_vision:lastest
+```
+
+构建开发容器
+
+```
+docker run -d --privileged --network host \
+-v ws:/ros_ws --name rv_devel \
+chenjunnn/rm_vision:lastest \
+tail -f /dev/null
+```
+
+构建运行容器
+
+```
+docker run -it --privileged --network host \
+-v ws:/ros_ws --restart always --name rv_runtime \
+chenjunnn/rm_vision:lastest \
+/bin/bash -c "source /ros_ws/install/setup.bash &&
+ros2 launch rm_vision_bringup vision_bringup.launch.py camera_type:=hik"
+```
+
 TBD
 
 ## 源码编译
