@@ -21,7 +21,7 @@
     target_frame: odom
 
     ekf:
-      sigma2_q_xyz: 10.0
+      sigma2_q_xyz: 8.0
       sigma2_q_yaw: 100.0
       sigma2_q_r: 800.0
 

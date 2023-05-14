@@ -22,7 +22,7 @@ QQ 交流群：797203945
 
 MindVision 相机模块 https://github.com/chenjunnn/ros2_mindvision_camera
 
-HikVision 相机模块 https://github.com/nolem-77/ros2_hik_camera
+HikVision 相机模块 https://github.com/chenjunnn/ros2_hik_camera
 
 机器人云台描述文件 https://github.com/chenjunnn/rm_gimbal_description
 
