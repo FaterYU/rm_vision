@@ -3,7 +3,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration, PythonExpression
@@ -54,7 +54,7 @@ def camera_detector_container(camera_node, condition):
         ],
         output='screen',
         emulate_tty=True,
-        ros_arguments=['--log-level', 'armor_detector:=DEBUG'],
+        ros_arguments=['--log-level', 'armor_detector:=INFO'],
     )
 
 
@@ -72,7 +72,7 @@ tracker_node = Node(
     output='screen',
     emulate_tty=True,
     parameters=[params_file],
-    ros_arguments=['--log-level', 'armor_tracker:=DEBUG'],
+    ros_arguments=['--log-level', 'armor_tracker:=INFO'],
 )
 
 robot_state_publisher = Node(
@@ -89,13 +89,23 @@ rm_serial_launch = IncludeLaunchDescription(
             'launch', 'serial_driver.launch.py')),
 )
 
+delay_serial_launch = TimerAction(
+    period=1.0,
+    actions=[rm_serial_launch],
+)
+
+delay_tracker_node = TimerAction(
+    period=1.5,
+    actions=[tracker_node],
+)
+
 
 def generate_launch_description():
     return LaunchDescription([
         declare_camera_type_cmd,
+        robot_state_publisher,
         mv_camera_detector_container,
         hik_camera_detector_container,
-        tracker_node,
-        robot_state_publisher,
-        rm_serial_launch,
+        delay_serial_launch,
+        delay_tracker_node,
     ])

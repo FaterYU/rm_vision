@@ -28,9 +28,14 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
 # build
 RUN . /opt/ros/humble/setup.sh && colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
-# setup scripts
+# setup .zshrc
 RUN echo 'export TERM=xterm-256color\n\
 source /ros_ws/install/setup.zsh\n\
 eval "$(register-python-argcomplete3 ros2)"\n\
 eval "$(register-python-argcomplete3 colcon)"\n'\
 >> /root/.zshrc
+
+# source entrypoint setup
+RUN sed --in-place --expression \
+      '$isource "/ros_ws/install/setup.bash"' \
+      /ros_entrypoint.sh
