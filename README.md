@@ -41,16 +41,18 @@ docker pull chenjunnn/rm_vision:lastest
 构建开发容器
 
 ```
-docker run -d --name rv_devel \
---privileged --network host -v ws:/ros_ws chenjunnn/rm_vision:lastest \
-tail -f /dev/null
+docker run -it --name rv_devel \
+--privileged --network host -v ws:/ros_ws -v $HOME/.ros:/root/.ros \
+chenjunnn/rm_vision:lastest \
+ros2 launch foxglove_bridge foxglove_bridge_launch.xml
 ```
 
 构建运行容器
 
 ```
-docker run -it --restart always --name rv_runtime \ 
---privileged --network host -v ws:/ros_ws chenjunnn/rm_vision:lastest \
+docker run -it --name rv_runtime \
+--privileged --network host -v ws:/ros_ws -v $HOME/.ros:/root/.ros --restart always \
+chenjunnn/rm_vision:lastest \
 ros2 launch rm_vision_bringup vision_bringup.launch.py
 ```
 

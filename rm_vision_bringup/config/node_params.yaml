@@ -8,10 +8,13 @@
 
 /armor_detector:
   ros__parameters:
-    debug: false
+    debug: true
 
     detect_color: 0
     binary_thres: 80
+
+    light.min_ratio: 0.08
+    armor.min_light_ratio: 0.7
 
     classifier_threshold: 0.8
     ignore_classes: ["negative"]

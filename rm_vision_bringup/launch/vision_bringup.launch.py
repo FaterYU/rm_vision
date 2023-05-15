@@ -1,111 +1,79 @@
-import os
-
-from ament_index_python.packages import get_package_share_directory
-
-from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction
-from launch.conditions import IfCondition
+from launch.substitutions import Command, PythonExpression
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, LaunchConfiguration, PythonExpression
-
-from launch_ros.actions import ComposableNodeContainer, Node
-from launch_ros.descriptions import ComposableNode
-
-camera_type = LaunchConfiguration('camera')
-declare_camera_type_cmd = DeclareLaunchArgument(
-    'camera',
-    default_value='hik',
-    description='Available camera types: hik, mv')
-
-params_file = os.path.join(
-    get_package_share_directory('rm_vision_bringup'), 'config', 'params.yaml')
-
-robot_description = Command(['xacro ', os.path.join(
-    get_package_share_directory('rm_gimbal_description'),
-    'urdf', 'rm_gimbal.urdf.xacro')])
-
-
-def camera_node(package, plugin):
-    return ComposableNode(
-        package=package,
-        plugin=plugin,
-        name='camera_node',
-        parameters=[params_file],
-        extra_arguments=[{'use_intra_process_comms': True}]
-    )
-
-
-def camera_detector_container(camera_node, condition):
-    return ComposableNodeContainer(
-        name='camera_detector_container',
-        namespace='',
-        package='rclcpp_components',
-        executable='component_container',
-        condition=condition,
-        composable_node_descriptions=[
-            camera_node,
-            ComposableNode(
-                package='armor_detector',
-                plugin='rm_auto_aim::ArmorDetectorNode',
-                name='armor_detector',
-                parameters=[params_file],
-                extra_arguments=[{'use_intra_process_comms': True}]
-            )
-        ],
-        output='screen',
-        emulate_tty=True,
-        ros_arguments=['--log-level', 'armor_detector:=INFO'],
-    )
-
-
-hik_camera_node = camera_node('hik_camera', 'hik_camera::HikCameraNode')
-hik_camera_detector_container = camera_detector_container(
-    hik_camera_node, IfCondition(PythonExpression(["'", camera_type, "'=='hik'"])))
-
-mv_camera_node = camera_node('mindvision_camera', 'mindvision_camera::MVCameraNode')
-mv_camera_detector_container = camera_detector_container(
-    mv_camera_node, IfCondition(PythonExpression(["'", camera_type, "'=='mv'"])))
-
-tracker_node = Node(
-    package='armor_tracker',
-    executable='armor_tracker_node',
-    output='screen',
-    emulate_tty=True,
-    parameters=[params_file],
-    ros_arguments=['--log-level', 'armor_tracker:=INFO'],
-)
-
-robot_state_publisher = Node(
-    package='robot_state_publisher',
-    executable='robot_state_publisher',
-    parameters=[{'robot_description': robot_description,
-                 'publish_frequency': 1000.0}]
-)
-
-rm_serial_launch = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(
-        os.path.join(
-            get_package_share_directory('rm_serial_driver'),
-            'launch', 'serial_driver.launch.py')),
-)
-
-delay_serial_launch = TimerAction(
-    period=1.0,
-    actions=[rm_serial_launch],
-)
-
-delay_tracker_node = TimerAction(
-    period=1.5,
-    actions=[tracker_node],
-)
+from launch.conditions import IfCondition
+from launch.actions import IncludeLaunchDescription, TimerAction
+from launch import LaunchDescription
+import os
+import sys
+from ament_index_python.packages import get_package_share_directory
+sys.path.append(os.path.join(get_package_share_directory('rm_vision_bringup'), 'launch'))
 
 
 def generate_launch_description():
+
+    from common import node_params, launch_params, robot_state_publisher, tracker_node
+    from launch_ros.descriptions import ComposableNode
+    from launch_ros.actions import ComposableNodeContainer
+
+    def get_camera_node(package, plugin):
+        return ComposableNode(
+            package=package,
+            plugin=plugin,
+            name='camera_node',
+            parameters=[node_params],
+            extra_arguments=[{'use_intra_process_comms': True}]
+        )
+
+    def get_camera_detector_container(camera_node):
+        return ComposableNodeContainer(
+            name='camera_detector_container',
+            namespace='',
+            package='rclcpp_components',
+            executable='component_container',
+            composable_node_descriptions=[
+                camera_node,
+                ComposableNode(
+                    package='armor_detector',
+                    plugin='rm_auto_aim::ArmorDetectorNode',
+                    name='armor_detector',
+                    parameters=[node_params],
+                    extra_arguments=[{'use_intra_process_comms': True}]
+                )
+            ],
+            output='screen',
+            emulate_tty=True,
+            ros_arguments=['--ros-args', '--log-level',
+                           'armor_detector:='+launch_params['detector_log_level']],
+        )
+
+    hik_camera_node = get_camera_node('hik_camera', 'hik_camera::HikCameraNode')
+    mv_camera_node = get_camera_node('mindvision_camera', 'mindvision_camera::MVCameraNode')
+
+    if (launch_params['camera'] == 'hik'):
+        cam_detector = get_camera_detector_container(hik_camera_node)
+    elif (launch_params['camera'] == 'mv'):
+        cam_detector = get_camera_detector_container(mv_camera_node)
+
+    rm_serial_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('rm_serial_driver'),
+                'launch', 'serial_driver.launch.py')),
+    )
+
+    delay_serial_launch = TimerAction(
+        period=1.5,
+        actions=[rm_serial_launch],
+    )
+
+    delay_tracker_node = TimerAction(
+        period=2.0,
+        actions=[tracker_node],
+    )
+
     return LaunchDescription([
-        declare_camera_type_cmd,
         robot_state_publisher,
-        mv_camera_detector_container,
-        hik_camera_detector_container,
+        cam_detector,
         delay_serial_launch,
         delay_tracker_node,
     ])
