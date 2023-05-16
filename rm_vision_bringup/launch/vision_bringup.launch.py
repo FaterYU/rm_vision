@@ -1,8 +1,3 @@
-from launch.substitutions import Command, PythonExpression
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.conditions import IfCondition
-from launch.actions import IncludeLaunchDescription, TimerAction
-from launch import LaunchDescription
 import os
 import sys
 from ament_index_python.packages import get_package_share_directory
@@ -13,7 +8,9 @@ def generate_launch_description():
 
     from common import node_params, launch_params, robot_state_publisher, tracker_node
     from launch_ros.descriptions import ComposableNode
-    from launch_ros.actions import ComposableNodeContainer
+    from launch_ros.actions import ComposableNodeContainer, Node
+    from launch.actions import TimerAction
+    from launch import LaunchDescription
 
     def get_camera_node(package, plugin):
         return ComposableNode(
@@ -54,16 +51,18 @@ def generate_launch_description():
     elif (launch_params['camera'] == 'mv'):
         cam_detector = get_camera_detector_container(mv_camera_node)
 
-    rm_serial_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory('rm_serial_driver'),
-                'launch', 'serial_driver.launch.py')),
+    serial_driver_node = Node(
+        package='rm_serial_driver',
+        executable='rm_serial_driver_node',
+        name='serial_driver',
+        output='screen',
+        emulate_tty=True,
+        parameters=[node_params],
     )
 
-    delay_serial_launch = TimerAction(
+    delay_serial_node = TimerAction(
         period=1.5,
-        actions=[rm_serial_launch],
+        actions=[serial_driver_node],
     )
 
     delay_tracker_node = TimerAction(
@@ -74,6 +73,6 @@ def generate_launch_description():
     return LaunchDescription([
         robot_state_publisher,
         cam_detector,
-        delay_serial_launch,
+        delay_serial_node,
         delay_tracker_node,
     ])

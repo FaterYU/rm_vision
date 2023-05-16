@@ -1,10 +1,17 @@
 /camera_node:
   ros__parameters:
     camera_info_url: package://rm_vision_bringup/config/camera_info.yaml
-    timestamp_offset: -0.055
-
     exposure_time: 2500
     gain: 8.0
+
+/serial_driver:
+  ros__parameters:
+    timestamp_offset: 0.006
+    device_name: /dev/ttyACM0
+    baud_rate: 115200
+    flow_control: none
+    parity: none
+    stop_bits: "1"
 
 /armor_detector:
   ros__parameters:
