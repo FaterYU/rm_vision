@@ -1,8 +1,8 @@
 /camera_node:
   ros__parameters:
-    camera_name: narrow_stereo
     camera_info_url: package://rm_vision_bringup/config/camera_info.yaml
-    frame_id: "camera_optical_frame"
+    timestamp_offset: -0.055
+
     exposure_time: 2500
     gain: 8.0
 
@@ -33,5 +33,7 @@
 
     tracker:
       max_match_distance: 0.15
+      outlier_thres: 0.5
+
       tracking_thres: 3
-      lost_time_thres: 0.6
+      lost_time_thres: 0.8

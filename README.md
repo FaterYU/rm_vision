@@ -42,7 +42,8 @@ docker pull chenjunnn/rm_vision:lastest
 
 ```
 docker run -it --name rv_devel \
---privileged --network host -v ws:/ros_ws -v $HOME/.ros:/root/.ros \
+--privileged --network host \
+-v /dev:/dev -v $HOME/.ros:/root/.ros -v ws:/ros_ws \
 chenjunnn/rm_vision:lastest \
 ros2 launch foxglove_bridge foxglove_bridge_launch.xml
 ```
@@ -51,7 +52,8 @@ ros2 launch foxglove_bridge foxglove_bridge_launch.xml
 
 ```
 docker run -it --name rv_runtime \
---privileged --network host -v ws:/ros_ws -v $HOME/.ros:/root/.ros --restart always \
+--privileged --network host --restart always \
+-v /dev:/dev -v $HOME/.ros:/root/.ros -v ws:/ros_ws \
 chenjunnn/rm_vision:lastest \
 ros2 launch rm_vision_bringup vision_bringup.launch.py
 ```
