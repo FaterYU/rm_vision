@@ -60,6 +60,8 @@ def generate_launch_description():
         emulate_tty=True,
         parameters=[node_params],
         on_exit=Shutdown(),
+        ros_arguments=['--ros-args', '--log-level',
+                       'serial_driver:='+launch_params['serial_log_level']],
     )
 
     delay_serial_node = TimerAction(
