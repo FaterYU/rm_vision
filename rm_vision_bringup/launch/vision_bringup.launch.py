@@ -9,7 +9,7 @@ def generate_launch_description():
     from common import node_params, launch_params, robot_state_publisher, tracker_node
     from launch_ros.descriptions import ComposableNode
     from launch_ros.actions import ComposableNodeContainer, Node
-    from launch.actions import TimerAction
+    from launch.actions import TimerAction, Shutdown
     from launch import LaunchDescription
 
     def get_camera_node(package, plugin):
@@ -41,6 +41,7 @@ def generate_launch_description():
             emulate_tty=True,
             ros_arguments=['--ros-args', '--log-level',
                            'armor_detector:='+launch_params['detector_log_level']],
+            on_exit=Shutdown(),
         )
 
     hik_camera_node = get_camera_node('hik_camera', 'hik_camera::HikCameraNode')
@@ -58,6 +59,7 @@ def generate_launch_description():
         output='screen',
         emulate_tty=True,
         parameters=[node_params],
+        on_exit=Shutdown(),
     )
 
     delay_serial_node = TimerAction(
