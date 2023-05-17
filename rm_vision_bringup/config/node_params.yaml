@@ -20,8 +20,8 @@
     detect_color: 0
     binary_thres: 80
 
-    light.min_ratio: 0.08
-    armor.min_light_ratio: 0.7
+    light.min_ratio: 0.1
+    armor.min_light_ratio: 0.75
 
     classifier_threshold: 0.8
     ignore_classes: ["negative"]
@@ -29,18 +29,19 @@
 /armor_tracker:
   ros__parameters:
     target_frame: odom
+    max_armor_distance: 10.0
 
     ekf:
-      sigma2_q_xyz: 5e-2
-      sigma2_q_yaw: 1e1
+      sigma2_q_xyz: 0.05
+      sigma2_q_yaw: 5.0
       sigma2_q_r: 80.0
 
-      r_xyz_factor: 2e-4
+      r_xyz_factor: 4e-4
       r_yaw: 5e-3
 
     tracker:
-      max_match_distance: 0.15
-      outlier_thres: 0.5
+      max_match_distance: 0.25
+      max_match_yaw_diff: 0.85
 
-      tracking_thres: 3
-      lost_time_thres: 0.8
+      tracking_thres: 5
+      lost_time_thres: 1.0
