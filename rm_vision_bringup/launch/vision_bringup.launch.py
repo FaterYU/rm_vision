@@ -37,7 +37,7 @@ def generate_launch_description():
                     extra_arguments=[{'use_intra_process_comms': True}]
                 )
             ],
-            output='screen',
+            output='both',
             emulate_tty=True,
             ros_arguments=['--ros-args', '--log-level',
                            'armor_detector:='+launch_params['detector_log_level']],
@@ -56,7 +56,7 @@ def generate_launch_description():
         package='rm_serial_driver',
         executable='rm_serial_driver_node',
         name='serial_driver',
-        output='screen',
+        output='both',
         emulate_tty=True,
         parameters=[node_params],
         on_exit=Shutdown(),

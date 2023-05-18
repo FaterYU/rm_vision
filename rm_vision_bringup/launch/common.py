@@ -25,7 +25,7 @@ node_params = os.path.join(
 tracker_node = Node(
     package='armor_tracker',
     executable='armor_tracker_node',
-    output='screen',
+    output='both',
     emulate_tty=True,
     parameters=[node_params],
     ros_arguments=['--log-level', 'armor_tracker:='+launch_params['tracker_log_level']],
