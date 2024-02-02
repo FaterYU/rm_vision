@@ -45,3 +45,33 @@
 
       tracking_thres: 5
       lost_time_thres: 1.0
+
+/buff_detector:
+  ros__parameters:
+    detector:
+      nms_threshold: 0.05
+      conf_threshold: 0.7
+      image_size: 640
+    
+/buff_tracker:
+  ros__parameters:
+    target_frame: odom
+
+    ekf:
+      sigma2_q_xyz: 0.05
+      sigma2_q_theta: 5.0
+      sigma2_q_r: 80.0
+
+      r_blade: 1e-4
+      r_center: 1e-4
+
+    tracker:
+      lost_time_threshold: 0.5
+      max_match_theta: 0.628
+      max_match_center_xoy: 2.0
+
+      tracking_threshold: 4
+
+      robot_z_ground: 200.0
+      distance: 6626.0
+      max_distance_diff: 905.0
