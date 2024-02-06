@@ -58,20 +58,21 @@
     target_frame: odom
 
     ekf:
-      sigma2_q_xyz: 0.05
-      sigma2_q_theta: 5.0
-      sigma2_q_r: 80.0
+      sigma2_q_xyz: 0.4
+      sigma2_q_theta: 0.3
+      sigma2_q_r: 0.0
 
-      r_blade: 1e-4
-      r_center: 1e-4
+      r_blade: 6e-4
+      r_center: 2e-4
 
     tracker:
-      lost_time_threshold: 0.5
-      max_match_theta: 0.628
-      max_match_center_xoy: 2.0
+      lost_time_threshold: 0.2
+      max_match_theta: 0.5
+      max_match_center_xoy: 10.0
 
-      tracking_threshold: 4
+      tracking_threshold: 8
 
-      robot_z_ground: 200.0
+      blade_z_ground: 1603.0
+      robot_z_ground: 416.0
       distance: 6626.0
       max_distance_diff: 905.0
