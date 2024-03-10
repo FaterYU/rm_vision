@@ -1,7 +1,7 @@
 /camera_node:
   ros__parameters:
     camera_info_url: package://rm_vision_bringup/config/camera_info.yaml
-    exposure_time: 2500
+    exposure_time: 3500
     gain: 8.0
 
 /serial_driver:
@@ -18,7 +18,7 @@
     debug: true
 
     detect_color: 0
-    binary_thres: 80
+    binary_thres: 75
 
     light.min_ratio: 0.1
     armor.min_light_ratio: 0.8
@@ -52,6 +52,7 @@
       nms_threshold: 0.05
       conf_threshold: 0.7
       image_size: 640
+      bin_threshold: 90.0
     
 /buff_tracker:
   ros__parameters:
@@ -70,7 +71,7 @@
       max_match_theta: 0.5
       max_match_center_xoy: 10.0
 
-      tracking_threshold: 8
+      tracking_threshold: 4
 
       blade_z_ground: 1603.0
       robot_z_ground: 416.0
