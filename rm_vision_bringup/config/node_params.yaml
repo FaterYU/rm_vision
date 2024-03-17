@@ -1,7 +1,7 @@
 /camera_node:
   ros__parameters:
     camera_info_url: package://rm_vision_bringup/config/camera_info.yaml
-    exposure_time: 3500
+    exposure_time: 3000
     gain: 8.0
 
 /serial_driver:
@@ -52,8 +52,8 @@
       nms_threshold: 0.05
       conf_threshold: 0.7
       image_size: 640
-      bin_threshold: 90.0
-    
+      bin_threshold: 70.0
+
 /buff_tracker:
   ros__parameters:
     target_frame: odom
@@ -67,11 +67,11 @@
       r_center: 2e-4
 
     tracker:
-      lost_time_threshold: 0.2
-      max_match_theta: 0.5
-      max_match_center_xoy: 10.0
+      lost_time_threshold: 2.0
+      max_match_theta: 0.4
+      max_match_center_xoy: 0.1
 
-      tracking_threshold: 4
+      tracking_threshold: 20
 
       blade_z_ground: 1603.0
       robot_z_ground: 416.0

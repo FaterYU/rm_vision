@@ -1,8 +1,8 @@
 camera: hik
 
 odom2camera:
-  xyz: "\" 0.09799 0.0 0.0408\""
-  rpy: "\"0.0  0.0  0.0\""
+  xyz: "\"0.09799 0.0 0.0408\""
+  rpy: "\"0.0  -0.1  -0.02\""
 
 armor_detector_log_level: INFO
 armor_tracker_log_level: INFO

@@ -29,13 +29,13 @@ def generate_launch_description():
             executable='component_container',
             composable_node_descriptions=[
                 camera_node,
-                ComposableNode(
-                    package='armor_detector',
-                    plugin='rm_auto_aim::ArmorDetectorNode',
-                    name='armor_detector',
-                    parameters=[node_params],
-                    extra_arguments=[{'use_intra_process_comms': True}]
-                ),
+                # ComposableNode(
+                #     package='armor_detector',
+                #     plugin='rm_auto_aim::ArmorDetectorNode',
+                #     name='armor_detector',
+                #     parameters=[node_params],
+                #     extra_arguments=[{'use_intra_process_comms': True}]
+                # ),
                 ComposableNode(
                     package='buff_detector',
                     plugin='rm_buff::BuffDetectorNode',
@@ -91,6 +91,6 @@ def generate_launch_description():
         robot_state_publisher,
         cam_detector,
         delay_serial_node,
-        delay_armor_tracker_node,
+        #delay_armor_tracker_node,
         delay_buff_tracker_node
     ])
