@@ -6,7 +6,7 @@ sys.path.append(os.path.join(get_package_share_directory('rm_vision_bringup'), '
 
 def generate_launch_description():
 
-    from common import node_params, launch_params, robot_state_publisher, armor_tracker_node, buff_tracker_node
+    from common import node_params, launch_params, robot_state_publisher, tracker_node
     from launch_ros.descriptions import ComposableNode
     from launch_ros.actions import ComposableNodeContainer, Node
     from launch.actions import TimerAction, Shutdown
@@ -29,17 +29,10 @@ def generate_launch_description():
             executable='component_container',
             composable_node_descriptions=[
                 camera_node,
-                # ComposableNode(
-                #     package='armor_detector',
-                #     plugin='rm_auto_aim::ArmorDetectorNode',
-                #     name='armor_detector',
-                #     parameters=[node_params],
-                #     extra_arguments=[{'use_intra_process_comms': True}]
-                # ),
                 ComposableNode(
-                    package='buff_detector',
-                    plugin='rm_buff::BuffDetectorNode',
-                    name='buff_detector',
+                    package='armor_detector',
+                    plugin='rm_auto_aim::ArmorDetectorNode',
+                    name='armor_detector',
                     parameters=[node_params],
                     extra_arguments=[{'use_intra_process_comms': True}]
                 )
@@ -47,8 +40,7 @@ def generate_launch_description():
             output='both',
             emulate_tty=True,
             ros_arguments=['--ros-args', '--log-level',
-                           'armor_detector:='+launch_params['armor_detector_log_level'],
-                            '--log-level', 'buff_detector:='+launch_params['buff_detector_log_level']],
+                           'armor_detector:='+launch_params['detector_log_level']],
             on_exit=Shutdown(),
         )
 
@@ -77,20 +69,14 @@ def generate_launch_description():
         actions=[serial_driver_node],
     )
 
-    delay_armor_tracker_node = TimerAction(
+    delay_tracker_node = TimerAction(
         period=2.0,
-        actions=[armor_tracker_node],
-    )
-    
-    delay_buff_tracker_node = TimerAction(
-        period=2.0,
-        actions=[buff_tracker_node],
+        actions=[tracker_node],
     )
 
     return LaunchDescription([
         robot_state_publisher,
         cam_detector,
         delay_serial_node,
-        #delay_armor_tracker_node,
-        delay_buff_tracker_node
+        delay_tracker_node,
     ])

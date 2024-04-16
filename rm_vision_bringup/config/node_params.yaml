@@ -18,10 +18,10 @@
     debug: true
 
     detect_color: 0
-    binary_thres: 75
+    binary_thres: 80
 
     light.min_ratio: 0.1
-    armor.min_light_ratio: 0.8
+    armor.min_light_ratio: 0.7
 
     classifier_threshold: 0.8
     ignore_classes: ["negative"]
@@ -29,51 +29,21 @@
 /armor_tracker:
   ros__parameters:
     target_frame: odom
-    max_armor_distance: 10.0
+    max_armor_distance: 15.0
 
     ekf:
-      sigma2_q_xyz: 0.05
-      sigma2_q_yaw: 5.0
-      sigma2_q_r: 80.0
+      sigma2_q_xyz_max: 0.16
+      sigma2_q_xyz_min: 0.1
+      sigma2_q_yaw_max: 10.0
+      sigma2_q_yaw_min: 5.0
+      sigma2_q_r: 150.0
 
-      r_xyz_factor: 4e-4
-      r_yaw: 5e-3
+      r_xyz_factor: 5e-4
+      r_yaw: 8e-3
 
     tracker:
-      max_match_distance: 0.5
+      max_match_distance: 0.25
       max_match_yaw_diff: 1.0
 
       tracking_thres: 5
       lost_time_thres: 1.0
-
-/buff_detector:
-  ros__parameters:
-    detector:
-      nms_threshold: 0.05
-      conf_threshold: 0.7
-      image_size: 640
-      bin_threshold: 70.0
-
-/buff_tracker:
-  ros__parameters:
-    target_frame: odom
-
-    ekf:
-      sigma2_q_xyz: 0.4
-      sigma2_q_theta: 0.3
-      sigma2_q_r: 0.0
-
-      r_blade: 6e-4
-      r_center: 2e-4
-
-    tracker:
-      lost_time_threshold: 2.0
-      max_match_theta: 0.4
-      max_match_center_xoy: 0.1
-
-      tracking_threshold: 20
-
-      blade_z_ground: 1603.0
-      robot_z_ground: 416.0
-      distance: 6626.0
-      max_distance_diff: 905.0
