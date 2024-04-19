@@ -1,6 +1,5 @@
 import os
 import yaml
-
 from ament_index_python.packages import get_package_share_directory
 from launch.substitutions import Command
 from launch_ros.actions import Node
@@ -18,15 +17,32 @@ robot_state_publisher = Node(
     parameters=[{'robot_description': robot_description,
                  'publish_frequency': 1000.0}]
 )
-
 node_params = os.path.join(
     get_package_share_directory('rm_vision_bringup'), 'config', 'node_params.yaml')
 
-tracker_node = Node(
+armor_tracker_node = Node(
     package='armor_tracker',
     executable='armor_tracker_node',
     output='both',
     emulate_tty=True,
     parameters=[node_params],
-    ros_arguments=['--log-level', 'armor_tracker:='+launch_params['tracker_log_level']],
+    ros_arguments=['--log-level', 'armor_tracker:='+launch_params['armor_tracker_log_level']],
+)
+
+buff_tracker_node = Node(
+    package='buff_tracker',
+    executable='buff_tracker_node',
+    output='both',
+    emulate_tty=True,
+    parameters=[node_params],
+    ros_arguments=['--log-level', 'buff_tracker:='+launch_params['buff_tracker_log_level']],
+)
+
+auto_record_node = Node(
+    package='rm_auto_record',
+    executable='rm_auto_record_node',
+    output='both',
+    emulate_tty=True,
+    parameters=[node_params],
+    ros_arguments=['--log-level', 'rm_auto_record:='+launch_params['auto_record_log_level']],
 )

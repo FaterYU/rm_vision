@@ -4,6 +4,9 @@ odom2camera:
   xyz: "\"0.10 0.0  0.05\""
   rpy: "\"0.0  0.0  0.0\""
 
-detector_log_level: INFO
-tracker_log_level: INFO
+armor_detector_log_level: INFO
+armor_tracker_log_level: INFO
+buff_detector_log_level: INFO
+buff_tracker_log_level: INFO
 serial_log_level: INFO
+auto_record_log_level: INFO

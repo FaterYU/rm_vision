@@ -47,3 +47,48 @@
 
       tracking_thres: 5
       lost_time_thres: 1.0
+
+/buff_detector:
+  ros__parameters:
+    detector:
+      nms_threshold: 0.05
+      conf_threshold: 0.7
+      image_size: 640
+      bin_threshold: 70.0
+
+/buff_tracker:
+  ros__parameters:
+    target_frame: odom
+
+    ekf:
+      sigma2_q_xyz: 0.4
+      sigma2_q_theta: 0.3
+      sigma2_q_r: 0.0
+
+      r_blade: 6e-4
+      r_center: 2e-4
+
+    gns:
+      min_a: 0.4
+      max_a: 1.3
+      min_w: 1.5
+      max_w: 2.3
+      max_iter: 50
+      min_step: 1e-10
+      obs_max_size: 150
+      a_start: 0.9125
+      w_start: 1.942
+      c_start: 0.0
+      min_first_solve_time: 2.0
+
+    tracker:
+      lost_time_threshold: 2.0
+      max_match_theta: 0.4
+      max_match_center_xoy: 0.1
+
+      tracking_threshold: 20
+
+      blade_z_ground: 1603.0
+      robot_z_ground: 416.0
+      distance: 6626.0
+      max_distance_diff: 905.0
