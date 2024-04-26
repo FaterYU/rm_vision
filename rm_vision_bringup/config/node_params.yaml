@@ -54,7 +54,8 @@
       nms_threshold: 0.05
       conf_threshold: 0.7
       image_size: 640
-      bin_threshold: 70.0
+      bin_threshold: 65.0
+      fault_tolerance_ratio: 0.1
 
 /buff_tracker:
   ros__parameters:
@@ -81,10 +82,18 @@
       c_start: 0.0
       min_first_solve_time: 2.0
 
+    ekf_gns:
+      sigma2_q_a: 0.1
+      sigma2_q_w: 1e-4
+      sigma2_q_c: 1e2
+      r_a: 1e-8
+      r_w: 1e-8
+      r_c: 1e-8
+
     tracker:
       lost_time_threshold: 2.0
       max_match_theta: 0.4
-      max_match_center_xoy: 0.1
+      max_match_center_xoy: 1.0
 
       tracking_threshold: 20
 
