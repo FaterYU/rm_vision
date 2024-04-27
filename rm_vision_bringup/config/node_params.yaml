@@ -51,6 +51,7 @@
 /buff_detector:
   ros__parameters:
     detector:
+      model: "buff-1_quantized.xml"
       nms_threshold: 0.05
       conf_threshold: 0.7
       image_size: 640
