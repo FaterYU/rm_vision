@@ -12,7 +12,8 @@ RUN cd src && git clone https://github.com/FaterYU/rm_auto_aim.git --depth=1 && 
     git clone https://github.com/FaterYU/rm_vision_ros2_hik_camera.git --depth=1 && \
     git clone https://github.com/FaterYU/rm_gimbal_description.git --depth=1 && \
     git clone https://github.com/FaterYU/rm_serial_driver.git --depth=1 && \
-    git clone https://github.com/FaterYU/rm_vision.git --depth=1
+    git clone https://github.com/FaterYU/rm_vision.git --depth=1 && \
+    git clone https://github.com/FaterYU/rm_auto_record.git --depth=1
 
 # install dependencies and some tools
 RUN apt-get update && rosdep install --from-paths src --ignore-src -r -y && \

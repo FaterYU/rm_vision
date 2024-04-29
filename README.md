@@ -20,7 +20,7 @@ QQ 交流群：797203945
 
 装甲板自动瞄准算法模块 https://github.com/FaterYU/rm_auto_aim
 
-能量机关自动瞄准算法模块 https://github.com/FaterYU/rm_buff
+[new] 能量机关自动瞄准算法模块 https://github.com/FaterYU/rm_buff
 
 ~~MindVision 相机模块 https://github.com/FaterYU/ros2_mindvision_camera~~
 
@@ -31,6 +31,8 @@ HikVision 相机模块 https://github.com/FaterYU/ros2_hik_camera
 串口通讯模块 https://github.com/FaterYU/rm_serial_driver
 
 ~~视觉算法仿真器 https://github.com/FaterYU/rm_vision_simulator~~
+
+[new] 自动包录制模块 https://github.com/FaterYU/rm_auto_record
 
 ## 通过 Docker 部署
 
