@@ -2,7 +2,7 @@
   ros__parameters:
     camera_info_url: package://rm_vision_bringup/config/camera_info.yaml
     exposure_time: 3000
-    gain: 8.0
+    gain: 12.0
 
 /serial_driver:
   ros__parameters:
@@ -18,12 +18,13 @@
     debug: true
 
     detect_color: 0
-    binary_thres: 80
+    binary_thres: 78
 
     light.min_ratio: 0.1
-    armor.min_light_ratio: 0.7
+    light.min_fill_ratio: 0.6
+    armor.min_light_ratio: 0.8
 
-    classifier_threshold: 0.8
+    classifier_threshold: 0.6
     ignore_classes: ["negative"]
 
 /armor_tracker:
@@ -32,18 +33,18 @@
     max_armor_distance: 15.0
 
     ekf:
-      sigma2_q_xyz_max: 0.16
-      sigma2_q_xyz_min: 0.1
-      sigma2_q_yaw_max: 10.0
-      sigma2_q_yaw_min: 5.0
-      sigma2_q_r: 150.0
+      sigma2_q_xyz_max: 3.0
+      sigma2_q_xyz_min: 1.0
+      sigma2_q_yaw_max: 6.0
+      sigma2_q_yaw_min: 3.0
+      sigma2_q_r: 40.0
 
-      r_xyz_factor: 5e-4
+      r_xyz_factor: 6e-4
       r_yaw: 8e-3
 
     tracker:
-      max_match_distance: 0.25
-      max_match_yaw_diff: 1.0
+      max_match_distance: 0.5
+      max_match_yaw_diff: 0.8
 
       tracking_thres: 5
       lost_time_thres: 1.0
@@ -51,20 +52,20 @@
 /buff_detector:
   ros__parameters:
     detector:
-      model: "buff-1_quantized.xml"
+      model: "buff_quantized.xml"
       nms_threshold: 0.05
       conf_threshold: 0.7
       image_size: 640
-      bin_threshold: 65.0
-      fault_tolerance_ratio: 0.1
+      bin_threshold: 95.0 # 65.0
+      fault_tolerance_ratio: 0.3
 
 /buff_tracker:
   ros__parameters:
     target_frame: odom
 
     ekf:
-      sigma2_q_xyz: 0.4
-      sigma2_q_theta: 0.3
+      sigma2_q_xyz: 1e-3
+      sigma2_q_theta: 2.09 # a_max * w_max
       sigma2_q_r: 0.0
 
       r_blade: 6e-4
@@ -84,8 +85,8 @@
       min_first_solve_time: 2.0
 
     ekf_gns:
-      sigma2_q_a: 0.1
-      sigma2_q_w: 1e-4
+      sigma2_q_a: 1e-5
+      sigma2_q_w: 1e-5
       sigma2_q_c: 1e2
       r_a: 1e-8
       r_w: 1e-8
@@ -101,4 +102,16 @@
       blade_z_ground: 1603.0
       robot_z_ground: 416.0
       distance: 6626.0
-      max_distance_diff: 905.0
+      max_distance_diff: 120.0
+
+/rm_auto_record:
+  ros__parameters:
+    uri: "/ros_ws/"
+    topic_name:
+    - "/image_raw/compressed"
+    - "/camera_info"
+    - "/detector/armors"
+    topic_type:
+    - "sensor_msgs/msg/CompressedImage"
+    - "sensor_msgs/msg/CameraInfo"
+    - "auto_aim_interfaces/msg/Armors"
