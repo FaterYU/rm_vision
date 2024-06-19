@@ -1,5 +1,7 @@
 # rm_vision
 
+**如果此开源项目所改进的内容对贵战队有帮助请Star本项目，若有使用本项目的能量机关模块或借鉴思路后的实车击打效果，希望能将视频发一份给作者本人（qq：1042277145），这对作者有非常大的帮助，十分感谢！**
+
 <img src="docs/rm_vision.svg" alt="rm_vision" width="200" height="200">
 
 ## Overview
